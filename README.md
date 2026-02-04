@@ -13,7 +13,7 @@
 
 ## Overview
 
-**NearBy** is a peer-to-peer messaging application that works **without an Internet connection**. It uses proximity technologies (Bluetooth, WiFi Direct) to create a mesh network between nearby devices, allowing communication even in the absence of network infrastructure.
+**NearBy** is a peer-to-peer rebel messaging application that works **without an Internet connection**. It uses proximity technologies (Bluetooth, WiFi Direct) to create a mesh network between nearby devices, allowing communication even in the absence of network infrastructure. It democratizes communications and allows users to communicate at zero cost.
 
 ### Use Cases
 
@@ -22,6 +22,13 @@
 - **Emergencies** - Communication when traditional networks are down
 - **Privacy** - Messages that do not pass through external servers
 - **Buildings and Undergrounds** - Works where signal does not reach
+- **Airplane**During flights you can communicate with other passengers
+- **Global thermonuclear war** 🙂 - It works because there would be no more communications services
+
+
+### Advanced use cases
+
+- **Huge Diffusion Scenario** - With around 1000 devices in a medium-sized city of 50,000 - 100,000 inhabitants, users can communicate with each other(messages, chat, files ) without using any paid services.
 
 ---
 
