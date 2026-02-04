@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(build_project.bat)",
+      "Bash(cmd //c build_project.bat)",
+      "Bash(cmd //c \"set JAVA_HOME=C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-17.0.17.10-hotspot && cd /d C:\\\\Users\\\\gmincarbone\\\\nearby && gradlew.bat assembleDebug --no-daemon --stacktrace\")",
+      "Bash(cmd //c \"C:\\\\Users\\\\gmincarbone\\\\nearby\\\\build_project.bat\")",
+      "Bash(cmd //c:*)",
+      "Bash(export JAVA_HOME=\"/c/Program Files/Eclipse Adoptium/jdk-17.0.17.10-hotspot\")",
+      "Bash(adb install:*)",
+      "Bash(\"/c/Users/gmincarbone/AppData/Local/Android/Sdk/platform-tools/adb\" install -r \"C:\\\\Users\\\\gmincarbone\\\\nearby\\\\app\\\\build\\\\outputs\\\\apk\\\\debug\\\\app-debug.apk\")",
+      "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\gmincarbone\\\\nearby\\\\.history\")",
+      "Bash(.\\\\gradlew assembleDebug:*)",
+      "Bash(gradlew.bat assembleDebug:*)",
+      "Bash(./gradlew compileDebugKotlin:*)"
+    ]
+  }
+}
