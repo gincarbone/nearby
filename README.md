@@ -5,76 +5,76 @@
 </p>
 
 <p align="center">
-  <strong>Messaggistica P2P senza Internet</strong><br>
-  Connettiti con le persone intorno a te, ovunque tu sia.
+  <strong>Offline P2P Messaging</strong><br>
+  Connect with people around you, wherever you are.
 </p>
 
 ---
 
-## Panoramica
+## Overview
 
-**NearBy** è un'applicazione di messaggistica peer-to-peer che funziona **senza connessione Internet**. Utilizza tecnologie di prossimità (Bluetooth, WiFi Direct) per creare una rete mesh tra dispositivi vicini, permettendo la comunicazione anche in assenza di infrastruttura di rete.
+**NearBy** is a peer-to-peer messaging application that works **without an Internet connection**. It uses proximity technologies (Bluetooth, WiFi Direct) to create a mesh network between nearby devices, allowing communication even in the absence of network infrastructure.
 
-### Scenari d'Uso
+### Use Cases
 
-- **Festival e concerti** - Comunica con gli amici nella folla senza rete mobile sovraccarica
-- **Viaggi e escursioni** - Resta in contatto in zone senza copertura
-- **Emergenze** - Comunicazione quando le reti tradizionali sono fuori servizio
-- **Privacy** - Messaggi che non passano da server esterni
-- **Edifici e sotterranei** - Funziona dove il segnale non arriva
+- **Festivals and Concerts** - Communicate with friends in the crowd without overloaded mobile networks
+- **Travel and Hiking** - Stay in touch in areas with no coverage
+- **Emergencies** - Communication when traditional networks are down
+- **Privacy** - Messages that do not pass through external servers
+- **Buildings and Undergrounds** - Works where signal does not reach
 
 ---
 
-## Vantaggi Principali
+## Key Benefits
 
-### 🌐 Zero Dipendenza da Internet
-- Funziona completamente offline
-- Nessun server centrale
-- Nessun costo di dati mobili
+### 🌐 Zero Internet Dependency
+- Works completely offline
+- No central server
+- No mobile data costs
 
 ### 🔒 Privacy by Design
-- Crittografia end-to-end (AES-256-GCM)
-- I messaggi non transitano su server esterni
-- Nessuna registrazione con email o telefono
-- I dati restano sul dispositivo
+- End-to-end encryption (AES-256-GCM)
+- Messages do not transit on external servers
+- No registration with email or phone
+- Data remains on the device
 
-### 🕸️ Rete Mesh Intelligente
-- Ogni dispositivo è un nodo della rete
-- I messaggi possono "saltare" tra dispositivi
-- Maggiore è il numero di utenti, migliore è la copertura
+### 🕸️ Smart Mesh Network
+- Each device is a network node
+- Messages can "hop" between devices
+- The more users, the better the coverage
 
-### 🔋 Ottimizzato per la Batteria
-- Discovery adattivo basato su contesto
-- Heartbeat intelligente invece di scanning continuo
-- Modalità risparmio energetico automatica
+### 🔋 Battery Optimized
+- Adaptive discovery based on context
+- Smart heartbeat instead of continuous scanning
+- Automatic power-saving mode
 
-### 🌍 Multilingua
-- Italiano
+### 🌍 Multilingual
+- Italian
 - English
 
 ---
 
-## Architettura Tecnica
+## Technical Architecture
 
-### Stack Tecnologico
+### Tech Stack
 
-| Componente | Tecnologia |
+| Component | Technology |
 |------------|------------|
-| Linguaggio | Kotlin |
+| Language | Kotlin |
 | UI Framework | Jetpack Compose |
-| Connettività | Google Nearby Connections API |
+| Connectivity | Google Nearby Connections API |
 | Database | Room (SQLite) |
 | DI | Hilt |
 | Async | Kotlin Coroutines + Flow |
-| Crittografia | Android Keystore + AES-256-GCM |
+| Encryption | Android Keystore + AES-256-GCM |
 
 ### Google Nearby Connections
 
-L'app utilizza la [Nearby Connections API](https://developers.google.com/nearby/connections/overview) di Google con strategia **P2P_CLUSTER**, che permette:
+The app uses Google's [Nearby Connections API](https://developers.google.com/nearby/connections/overview) with **P2P_CLUSTER** strategy, which allows:
 
-- Connessioni multiple simultanee
-- Switching automatico tra Bluetooth, BLE, WiFi Direct e WiFi LAN
-- Throughput ottimizzato in base alla distanza
+- Multiple simultaneous connections
+- Automatic switching between Bluetooth, BLE, WiFi Direct, and WiFi LAN
+- Throughput optimized based on distance
 
 ```
 ┌─────────────┐         ┌─────────────┐
@@ -90,17 +90,17 @@ L'app utilizza la [Nearby Connections API](https://developers.google.com/nearby/
 
 ---
 
-## Rete Mesh
+## Mesh Network
 
-### Concetto Base
+### Basic Concept
 
-Ogni utente NearBy funziona simultaneamente come:
+Each NearBy user functions simultaneously as:
 
-1. **USER** - Invia e riceve i propri messaggi
-2. **RELAY** - Inoltra messaggi di altri utenti
-3. **STORE & FORWARD** - Memorizza messaggi per utenti offline
+1. **USER** - Sends and receives their own messages
+2. **RELAY** - Forwards messages from other users
+3. **STORE & FORWARD** - Stores messages for offline users
 
-### Topologia Distribuita
+### Distributed Topology
 
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -115,7 +115,7 @@ Ogni utente NearBy funziona simultaneamente come:
 │                    │                                       │
 │                 [Grace]                                    │
 │                                                            │
-│  Se Alice vuole inviare a Grace:                          │
+│  If Alice wants to send to Grace:                          │
 │  Alice → Bob → Eve → Grace                                 │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
@@ -123,72 +123,72 @@ Ogni utente NearBy funziona simultaneamente come:
 
 ### Routing Table
 
-Ogni nodo mantiene una **tabella di routing distribuita**:
+Each node maintains a **distributed routing table**:
 
 ```kotlin
 data class RouteEntry(
-    val destinationId: String,    // Nodo destinazione
-    val nextHop: String,          // Prossimo salto
-    val hopCount: Int,            // Numero di salti
+    val destinationId: String,    // Destination Node
+    val nextHop: String,          // Next Hop
+    val hopCount: Int,            // Number of Hops
     val lastUpdated: Long         // Timestamp
 )
 ```
 
-La tabella viene aggiornata tramite **TOPOLOGY_ANNOUNCE** periodici:
+The table is updated via periodic **TOPOLOGY_ANNOUNCE**:
 
 ```
-Ogni 30 secondi:
-  Nodo → broadcast ai vicini:
-    - Il mio ID
-    - I miei vicini diretti
-    - Le mie capacità (storage, uptime)
+Every 30 seconds:
+  Node → broadcast to neighbors:
+    - My ID
+    - My direct neighbors
+    - My capabilities (storage, uptime)
 ```
 
 ### Store & Forward
 
-Quando un destinatario è **offline**, il messaggio viene memorizzato:
+When a recipient is **offline**, the message is stored:
 
 ```
 ┌─────────────────────────────────────────────────────┐
 │              STORE & FORWARD FLOW                    │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│  1. Alice invia messaggio a Bob (offline)           │
+│  1. Alice sends message to Bob (offline)            │
 │                    │                                │
 │                    ▼                                │
-│  2. Nessuna route verso Bob                         │
+│  2. No route to Bob                                 │
 │                    │                                │
 │                    ▼                                │
-│  3. Messaggio memorizzato su nodo con capacità      │
-│     (preferenza: WiFi + in carica)                  │
+│  3. Message stored on node with capacity            │
+│     (preference: WiFi + charging)                   │
 │                    │                                │
 │                    ▼                                │
-│  4. Bob torna online, si connette alla mesh         │
+│  4. Bob comes online, connects to mesh              │
 │                    │                                │
 │                    ▼                                │
-│  5. Messaggio consegnato automaticamente            │
+│  5. Message delivered automatically                 │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
 
-**Retention Policy** (basata su contesto dispositivo):
+**Retention Policy** (based on device context):
 
-| Condizione | Retention | Storage |
+| Condition | Retention | Storage |
 |------------|-----------|---------|
-| WiFi + In carica | 7 giorni | 100 MB |
-| Solo WiFi | 36 ore | 50 MB |
-| Batteria > 30% | 18 ore | 20 MB |
-| Batteria < 30% | Disabilitato | - |
+| WiFi + Charging | 7 days | 100 MB |
+| Only WiFi | 36 hours | 50 MB |
+| Battery > 30% | 18 hours | 20 MB |
+| Battery < 30% | Disabled | - |
 
 ---
 
 ## Heartbeat System
 
-### Problema
-Discovery continuo = consumo batteria eccessivo
+### Problem
+Continuous discovery = excessive battery consumption
 
-### Soluzione
-**Heartbeat periodico**: brevi burst di discovery a intervalli adattivi
+### Solution
+**Periodic Heartbeat**: short bursts of discovery at adaptive intervals
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -206,43 +206,43 @@ Discovery continuo = consumo batteria eccessivo
 └─────────────────────────────────────────────────────┘
 ```
 
-### Configurazione Adattiva
+### Adaptive Configuration
 
-| Contesto | Discovery | Intervallo | % Attivo |
+| Context | Discovery | Interval | % Active |
 |----------|-----------|------------|----------|
 | WiFi + Charging | 15 sec | 2 min | 12.5% |
 | WiFi | 6 sec | 2 min | 5% |
 | Battery > 50% | 6 sec | 5 min | 2% |
 | Battery 30-50% | 6 sec | 10 min | 1% |
-| Battery < 30% | Disabilitato | - | 0% |
+| Battery < 30% | Disabled | - | 0% |
 
 ---
 
-## Protocollo Messaggi
+## Message Protocol
 
-### Tipi di Messaggio
+### Message Types
 
 ```kotlin
-// Handshake (connessione)
-HANDSHAKE_INIT     = 0x01  // Richiesta connessione
-HANDSHAKE_RESPONSE = 0x02  // Risposta
+// Handshake (connection)
+HANDSHAKE_INIT     = 0x01  // Connection request
+HANDSHAKE_RESPONSE = 0x02  // Response
 
-// Messaggi utente
-PLAIN_MESSAGE      = 0x10  // Messaggio in chiaro
-ENCRYPTED_MESSAGE  = 0x11  // Messaggio cifrato
+// User messages
+PLAIN_MESSAGE      = 0x10  // Plain message
+ENCRYPTED_MESSAGE  = 0x11  // Encrypted message
 
-// Ricevute
-DELIVERY_RECEIPT   = 0x20  // Consegnato
-READ_RECEIPT       = 0x21  // Letto
+// Receipts
+DELIVERY_RECEIPT   = 0x20  // Delivered
+READ_RECEIPT       = 0x21  // Read
 
 // Mesh protocol
-TOPOLOGY_ANNOUNCE  = 0x30  // Annuncio topologia
-ROUTED_MESSAGE     = 0x31  // Messaggio instradato
-ROUTE_ACK          = 0x32  // Conferma routing
-STORE_CONFIRM      = 0x33  // Conferma storage
+TOPOLOGY_ANNOUNCE  = 0x30  // Topology announce
+ROUTED_MESSAGE     = 0x31  // Routed message
+ROUTE_ACK          = 0x32  // Routing confirmation
+STORE_CONFIRM      = 0x33  // Storage confirmation
 ```
 
-### Formato Messaggio
+### Message Format
 
 ```
 ┌────────────────────────────────────────┐
@@ -264,51 +264,51 @@ STORE_CONFIRM      = 0x33  // Conferma storage
 
 ---
 
-## Sicurezza
+## Security
 
-### Crittografia End-to-End
+### End-to-End Encryption
 
 ```
 ┌─────────────────────────────────────────────────────┐
 │              E2E ENCRYPTION                          │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│  1. Ogni utente genera coppia chiavi EC (P-256)     │
-│     - Chiave privata in Android Keystore            │
-│     - Chiave pubblica condivisa durante handshake   │
+│  1. Each user generates EC key pair (P-256)         │
+│     - Private key in Android Keystore               │
+│     - Public key shared during handshake            │
 │                                                     │
-│  2. Scambio chiavi (ECDH)                           │
+│  2. Key Exchange (ECDH)                             │
 │     SharedSecret = ECDH(myPrivate, peerPublic)      │
 │                                                     │
-│  3. Derivazione chiave simmetrica (HKDF)            │
+│  3. Symmetric Key Derivation (HKDF)                 │
 │     AESKey = HKDF(SharedSecret, salt, info)         │
 │                                                     │
-│  4. Cifratura messaggi (AES-256-GCM)                │
+│  4. Message Encryption (AES-256-GCM)                │
 │     Ciphertext = AES-GCM(AESKey, nonce, plaintext)  │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
 
-### Fingerprint Verifica
+### Fingerprint Verification
 
-Ogni utente ha un **fingerprint** derivato dalla chiave pubblica:
+Each user has a **fingerprint** derived from their public key:
 
 ```
-Esempio: "🔵🟢🔴🟡 🟣🟠⚪🟤"
+Example: "🔵🟢🔴🟡 🟣🟠⚪🟤"
 
-Verifica: confronta il fingerprint mostrato sui due dispositivi
+Verification: compare the fingerprint shown on both devices
 ```
 
 ---
 
-## Struttura Progetto
+## Project Structure
 
 ```
 app/src/main/java/com/nearby/
 ├── core/
-│   ├── crypto/          # Crittografia (CryptoManager)
+│   ├── crypto/          # Cryptography (CryptoManager)
 │   ├── di/              # Dependency Injection (Hilt modules)
-│   └── util/            # Utility (UUID, Date, Locale)
+│   └── util/            # Utilities (UUID, Date, Locale)
 │
 ├── data/
 │   ├── local/
@@ -335,37 +335,37 @@ app/src/main/java/com/nearby/
 │   └── repository/      # Repository interfaces
 │
 └── presentation/
-    ├── components/      # Reusable UI components
-    ├── navigation/      # Navigation graph
-    ├── screens/         # Screen composables
-    │   ├── chat/
-    │   ├── connected/
-    │   ├── discover/
-    │   ├── home/
-    │   ├── onboarding/
-    │   └── settings/
-    └── theme/           # Material Theme
+│   ├── components/      # Reusable UI components
+│   ├── navigation/      # Navigation graph
+│   ├── screens/         # Screen composables
+│   │   ├── chat/
+│   │   ├── connected/
+│   │   ├── discover/
+│   │   ├── home/
+│   │   ├── onboarding/
+│   │   └── settings/
+│   └── theme/           # Material Theme
 ```
 
 ---
 
-## Requisiti
+## Requirements
 
-- Android 8.0 (API 26) o superiore
-- Bluetooth attivo
-- Permessi posizione (richiesti da Nearby Connections)
-- WiFi attivo (opzionale, migliora le performance)
+- Android 8.0 (API 26) or higher
+- Bluetooth enabled
+- Location permissions (required by Nearby Connections)
+- WiFi enabled (optional, improves performance)
 
 ---
 
-## Permessi
+## Permissions
 
-| Permesso | Motivo |
-|----------|--------|
-| `ACCESS_FINE_LOCATION` | Richiesto da Nearby Connections |
-| `BLUETOOTH_*` | Comunicazione Bluetooth |
+| Permission | Reason |
+|------------|--------|
+| `ACCESS_FINE_LOCATION` | Required by Nearby Connections |
+| `BLUETOOTH_*` | Bluetooth communication |
 | `NEARBY_WIFI_DEVICES` | WiFi Direct (Android 13+) |
-| `POST_NOTIFICATIONS` | Notifiche messaggi |
+| `POST_NOTIFICATIONS` | Message notifications |
 
 ---
 
@@ -390,22 +390,22 @@ cd nearby
 
 ## Roadmap
 
-- [ ] Messaggi vocali
-- [ ] Condivisione file
-- [ ] Gruppi di chat
-- [ ] Messaggi che si autodistruggono
-- [ ] Backup crittografato
-- [ ] Widget home screen
+- [ ] Voice messages
+- [ ] File sharing
+- [ ] Group chats
+- [ ] Self-destructing messages
+- [ ] Encrypted backup
+- [ ] Home screen widget
 
 ---
 
-## Contribuire
+## Contributing
 
-Le pull request sono benvenute! Per modifiche importanti, apri prima una issue per discutere cosa vorresti cambiare.
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
-## Licenza
+## License
 
 [MIT](LICENSE)
 
