@@ -144,7 +144,7 @@ data class RouteEntry(
 The table is updated via periodic **TOPOLOGY_ANNOUNCE**:
 
 ```
-Every 30 seconds:
+Every 60 seconds:
   Node → broadcast to neighbors:
     - My ID
     - My direct neighbors
