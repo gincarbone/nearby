@@ -25,7 +25,6 @@
 - **Airplane**During flights you can communicate with other passengers
 - **Global thermonuclear war** 🙂 - It works because there would be no more communications services
 
-
 ### Advanced use cases
 
 - **Huge Diffusion Scenario** - With around 1000 devices in a medium-sized city of 50,000 - 100,000 inhabitants, users can communicate with each other(messages, chat, files ) without using any paid services.
@@ -35,27 +34,32 @@
 ## Key Benefits
 
 ### 🌐 Zero Internet Dependency
+
 - Works completely offline
 - No central server
 - No mobile data costs
 
 ### 🔒 Privacy by Design
+
 - End-to-end encryption (AES-256-GCM)
 - Messages do not transit on external servers
 - No registration with email or phone
 - Data remains on the device
 
 ### 🕸️ Smart Mesh Network
+
 - Each device is a network node
 - Messages can "hop" between devices
 - The more users, the better the coverage
 
 ### 🔋 Battery Optimized
+
 - Adaptive discovery based on context
 - Smart heartbeat instead of continuous scanning
 - Automatic power-saving mode
 
 ### 🌍 Multilingual
+
 - Italian
 - English
 
@@ -65,15 +69,15 @@
 
 ### Tech Stack
 
-| Component | Technology |
-|------------|------------|
-| Language | Kotlin |
-| UI Framework | Jetpack Compose |
-| Connectivity | Google Nearby Connections API |
-| Database | Room (SQLite) |
-| DI | Hilt |
-| Async | Kotlin Coroutines + Flow |
-| Encryption | Android Keystore + AES-256-GCM |
+| Component    | Technology                     |
+| ------------ | ------------------------------ |
+| Language     | Kotlin                         |
+| UI Framework | Jetpack Compose                |
+| Connectivity | Google Nearby Connections API  |
+| Database     | Room (SQLite)                  |
+| DI           | Hilt                           |
+| Async        | Kotlin Coroutines + Flow       |
+| Encryption   | Android Keystore + AES-256-GCM |
 
 ### Google Nearby Connections
 
@@ -180,21 +184,23 @@ When a recipient is **offline**, the message is stored:
 
 **Retention Policy** (based on device context):
 
-| Condition | Retention | Storage |
-|------------|-----------|---------|
-| WiFi + Charging | 7 days | 100 MB |
-| Only WiFi | 36 hours | 50 MB |
-| Battery > 30% | 18 hours | 20 MB |
-| Battery < 30% | Disabled | - |
+| Condition       | Retention | Storage |
+| --------------- | --------- | ------- |
+| WiFi + Charging | 7 days    | 100 MB  |
+| Only WiFi       | 36 hours  | 50 MB   |
+| Battery > 30%   | 18 hours  | 20 MB   |
+| Battery < 30%   | Disabled  | -       |
 
 ---
 
 ## Heartbeat System
 
 ### Problem
+
 Continuous discovery = excessive battery consumption
 
 ### Solution
+
 **Periodic Heartbeat**: short bursts of discovery at adaptive intervals
 
 ```
@@ -215,13 +221,15 @@ Continuous discovery = excessive battery consumption
 
 ### Adaptive Configuration
 
-| Context | Discovery | Interval | % Active |
-|----------|-----------|------------|----------|
-| WiFi + Charging | 15 sec | 2 min | 12.5% |
-| WiFi | 6 sec | 2 min | 5% |
-| Battery > 50% | 6 sec | 5 min | 2% |
-| Battery 30-50% | 6 sec | 10 min | 1% |
-| Battery < 30% | Disabled | - | 0% |
+Implemented in HeartbeatManager.kt
+
+| Context         | Discovery | Interval | % Active |
+| --------------- | --------- | -------- | -------- |
+| WiFi + Charging | 5 sec     | 1 min    | 8.33%    |
+| WiFi            | 2 sec     | 1 min    | 3.33%    |
+| Battery > 50%   | 2 sec     | 5 min    | 0.66%    |
+| Battery 30-50%  | 2 sec     | 10 min   | 0.33%    |
+| Battery < 30%   | Disabled  | -        | 0%       |
 
 ---
 
@@ -367,12 +375,12 @@ app/src/main/java/com/nearby/
 
 ## Permissions
 
-| Permission | Reason |
-|------------|--------|
+| Permission             | Reason                         |
+| ---------------------- | ------------------------------ |
 | `ACCESS_FINE_LOCATION` | Required by Nearby Connections |
-| `BLUETOOTH_*` | Bluetooth communication |
-| `NEARBY_WIFI_DEVICES` | WiFi Direct (Android 13+) |
-| `POST_NOTIFICATIONS` | Message notifications |
+| `BLUETOOTH_*`          | Bluetooth communication        |
+| `NEARBY_WIFI_DEVICES`  | WiFi Direct (Android 13+)      |
+| `POST_NOTIFICATIONS`   | Message notifications          |
 
 ---
 

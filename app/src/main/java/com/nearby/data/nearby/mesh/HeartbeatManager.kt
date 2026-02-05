@@ -30,10 +30,10 @@ import javax.inject.Singleton
  * Instead of continuous discovery (battery drain), it performs short "heartbeat"
  * discovery bursts at intervals that adapt to device context:
  *
- * - WiFi + Charging: 15 sec every 2 min (aggressive, device is powered)
- * - WiFi only: 6 sec every 2 min (balanced)
- * - Battery > 50%: 6 sec every 5 min (conservative)
- * - Battery 30-50%: 6 sec every 10 min (very conservative)
+ * - WiFi + Charging: 5 sec every 1 min (aggressive, device is powered)
+ * - WiFi only: 2 sec every 1 min (balanced)
+ * - Battery > 50%: 2 sec every 5 min (conservative)
+ * - Battery 30-50%: 2 sec every 10 min (very conservative)
  * - Battery < 30%: disabled (preserve battery)
  *
  * When peers are discovered, it auto-connects for mesh relay (message exchange),
@@ -291,28 +291,23 @@ class HeartbeatManager @Inject constructor(
 /**
  * Heartbeat configuration based on device context.
  */
-enum class HeartbeatConfig(
-    val discoveryDurationMs: Long,
-    val intervalMs: Long,
-    val description: String
-) {
     WIFI_CHARGING(
-        discoveryDurationMs = 15_000,  // 15 seconds
-        intervalMs = 2 * 60 * 1000,     // 2 minutes
+        discoveryDurationMs = 5_000,   // 5 seconds
+        intervalMs = 60 * 1000,        // 1 minute
         description = "WiFi + Charging"
     ),
     WIFI_ONLY(
-        discoveryDurationMs = 6_000,   // 6 seconds
-        intervalMs = 2 * 60 * 1000,     // 2 minutes
+        discoveryDurationMs = 2_000,   // 2 seconds
+        intervalMs = 60 * 1000,        // 1 minute
         description = "WiFi"
     ),
     BATTERY_HIGH(
-        discoveryDurationMs = 6_000,   // 6 seconds
+        discoveryDurationMs = 2_000,   // 2 seconds
         intervalMs = 5 * 60 * 1000,     // 5 minutes
         description = "Battery > 50%"
     ),
     BATTERY_MEDIUM(
-        discoveryDurationMs = 6_000,   // 6 seconds
+        discoveryDurationMs = 2_000,   // 2 seconds
         intervalMs = 10 * 60 * 1000,    // 10 minutes
         description = "Battery 30-50%"
     ),
