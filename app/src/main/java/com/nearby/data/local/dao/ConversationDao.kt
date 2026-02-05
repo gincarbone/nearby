@@ -23,7 +23,8 @@ interface ConversationDao {
         SELECT c.id, c.peerId, c.lastMessageId, c.unreadCount, c.updatedAt,
                p.id AS peer_id, p.endpointId AS peer_endpointId, p.displayName AS peer_displayName,
                p.publicKey AS peer_publicKey, p.isVerified AS peer_isVerified,
-               p.lastSeen AS peer_lastSeen, p.connectionState AS peer_connectionState
+               p.lastSeen AS peer_lastSeen, p.connectionState AS peer_connectionState,
+               p.lastSyncedAt AS peer_lastSyncedAt
         FROM conversations c
         INNER JOIN peers p ON c.peerId = p.id
         ORDER BY c.updatedAt DESC

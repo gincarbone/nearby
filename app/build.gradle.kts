@@ -5,6 +5,12 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+// Generate unique build ID based on timestamp
+fun generateBuildId(): String {
+    val timestamp = System.currentTimeMillis() / 1000
+    return timestamp.toString(36).uppercase()
+}
+
 android {
     namespace = "com.nearby"
     compileSdk = 34
@@ -20,9 +26,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // Resource configurations to reduce APK size - keep only necessary languages
+        resourceConfigurations += listOf("en", "it")
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BUILD_ID", "\"DEBUG\"")
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -30,6 +42,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Unique build ID for release
+            buildConfigField("String", "BUILD_ID", "\"${generateBuildId()}\"")
+        }
+    }
+
+    // Split APK by ABI to reduce size per architecture
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = true // Also generate universal APK
         }
     }
     compileOptions {
@@ -41,6 +65,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.8"
@@ -48,6 +73,13 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/*.txt"
+            excludes += "/*.md"
         }
     }
 }

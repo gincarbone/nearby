@@ -7,17 +7,33 @@ import java.io.File
 
 object AppSharer {
 
+    private const val RELEASE_APK_ASSET = "release/NearBy.apk"
+
     fun shareApp(context: Context) {
         try {
-            // Get the APK file
-            val appInfo = context.applicationInfo
-            val apkFile = File(appInfo.sourceDir)
-
-            // Copy to a shareable location
             val shareDir = File(context.cacheDir, "share")
             shareDir.mkdirs()
             val shareFile = File(shareDir, "NearBy.apk")
-            apkFile.copyTo(shareFile, overwrite = true)
+
+            // Try to use release APK from assets first (smaller, optimized)
+            val usedReleaseApk = try {
+                context.assets.open(RELEASE_APK_ASSET).use { input ->
+                    shareFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                true
+            } catch (e: Exception) {
+                // Release APK not in assets, fall back to installed APK
+                false
+            }
+
+            if (!usedReleaseApk) {
+                // Fall back to installed APK
+                val appInfo = context.applicationInfo
+                val apkFile = File(appInfo.sourceDir)
+                apkFile.copyTo(shareFile, overwrite = true)
+            }
 
             // Get URI via FileProvider
             val uri = FileProvider.getUriForFile(

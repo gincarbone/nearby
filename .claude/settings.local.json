@@ -14,7 +14,18 @@
       "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\gmincarbone\\\\nearby\\\\.history\")",
       "Bash(.\\\\gradlew assembleDebug:*)",
       "Bash(gradlew.bat assembleDebug:*)",
-      "Bash(./gradlew compileDebugKotlin:*)"
+      "Bash(./gradlew compileDebugKotlin:*)",
+      "Bash(./gradlew clean:*)",
+      "Bash(./gradlew:*)",
+      "Bash(where:*)",
+      "Bash(\"$JAVA_HOME/bin/keytool\":*)",
+      "Bash(ls:*)",
+      "Bash(ANDROID_SDK=\"C:/Users/gmincarbone/AppData/Local/Android/Sdk\":*)",
+      "Bash(BUILD_TOOLS=\"$ANDROID_SDK/build-tools/30.0.3\")",
+      "Bash(__NEW_LINE_e990d85d47409029__ echo \"=== Verifica firma APK universale ===\")",
+      "Bash(\"$BUILD_TOOLS/apksigner.bat\" verify --verbose C:/Users/gmincarbone/nearby/app/build/outputs/apk/signed/app-universal-release.apk)",
+      "Bash(C:/Users/gmincarbone/AppData/Local/Android/Sdk/build-tools/30.0.3/apksigner.bat:*)",
+      "Bash(__NEW_LINE_112338d66704a4c4__ echo \"=== 2. Build APK FINALE \\(con assets APK\\) ===\")"
     ]
   }
 }

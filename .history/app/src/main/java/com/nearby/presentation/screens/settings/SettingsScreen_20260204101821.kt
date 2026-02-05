@@ -383,7 +383,7 @@ fun SettingsScreen(
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = "NearBy",
-                        subtitle = "Version 1.1.3"
+                        subtitle = "Version 1.2.0"
                     )
                 }
             }

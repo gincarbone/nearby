@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nearby.BuildConfig
 import com.nearby.core.util.toFullDateTime
 import com.nearby.data.nearby.PreferencesManager
 import com.nearby.presentation.components.AppSharer
@@ -383,7 +384,7 @@ fun SettingsScreen(
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = "NearBy",
-                        subtitle = "Version 1.1.5"
+                        subtitle = "Version ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.BUILD_ID})"
                     )
                 }
             }

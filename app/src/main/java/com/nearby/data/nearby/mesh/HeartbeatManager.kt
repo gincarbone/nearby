@@ -291,6 +291,11 @@ class HeartbeatManager @Inject constructor(
 /**
  * Heartbeat configuration based on device context.
  */
+enum class HeartbeatConfig(
+    val discoveryDurationMs: Long,
+    val intervalMs: Long,
+    val description: String
+) {
     WIFI_CHARGING(
         discoveryDurationMs = 5_000,   // 5 seconds
         intervalMs = 60 * 1000,        // 1 minute
